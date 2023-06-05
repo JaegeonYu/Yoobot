@@ -14,15 +14,7 @@ import org.springframework.context.ApplicationContext;
 public class YoobotApplication {
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(YoobotApplication.class, args);
-        DiscordBotToken bean = context.getBean(DiscordBotToken.class);
-        String discordBotToken = bean.getToken();
-
-        JDA jda = JDABuilder.createDefault(discordBotToken)
-                .setActivity(Activity.playing("대기 중"))
-                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
-                .addEventListeners(new YooDiscordListener())
-                .build();
+        SpringApplication.run(YoobotApplication.class, args);
 
     }
 

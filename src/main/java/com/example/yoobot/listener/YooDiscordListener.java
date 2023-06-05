@@ -1,16 +1,36 @@
 package com.example.yoobot.listener;
 
+import com.example.yoobot.config.DiscordBotToken;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.security.auth.login.LoginException;
 import java.util.StringTokenizer;
 
 @Slf4j
+@Component
+@RequiredArgsConstructor
 public class YooDiscordListener extends ListenerAdapter {
+    private final DiscordBotToken discordBotToken;
+    @PostConstruct
+    public void init(){
+        JDA jda = JDABuilder.createDefault(discordBotToken.getToken())
+                .setActivity(Activity.playing("대기 중"))
+                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
+                .addEventListeners(this)
+                .build();
+    }
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         User user = event.getAuthor();
